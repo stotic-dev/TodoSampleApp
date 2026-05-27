@@ -12,10 +12,18 @@ ktlint {
     android.set(true)
     // コンソールにカラー付きで出力
     verbose.set(true)
+    // CI（-PktlintStrict 指定）では違反でビルドを失敗させ、
+    // 通常のローカルビルドでは警告のみで失敗させない
+    ignoreFailures.set(!project.hasProperty("ktlintStrict"))
     // 生成コード（KSP/Room/Hilt など）はチェック対象外
     filter {
         exclude { it.file.path.contains("generated/") }
     }
+}
+
+// ローカルビルド時にも ktlintCheck を実行する（警告のみ）
+tasks.named("preBuild") {
+    dependsOn("ktlintCheck")
 }
 
 android {
