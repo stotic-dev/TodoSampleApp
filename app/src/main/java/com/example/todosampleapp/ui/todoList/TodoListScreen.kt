@@ -1,7 +1,6 @@
 package com.example.todosampleapp.ui.todoList
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,7 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -31,11 +29,14 @@ import com.example.todosampleapp.domain.todo.TodoItem
 import com.example.todosampleapp.ui.theme.TodoSampleAppTheme
 
 @Composable
-fun TodoListScreen(viewModel: TodoListViewModel = hiltViewModel()) {
+fun TodoListScreen(
+    onAddTodoClick: () -> Unit,
+    viewModel: TodoListViewModel = hiltViewModel(),
+) {
     val todos by viewModel.todos.collectAsStateWithLifecycle()
     TodoListContent(
         todos = todos,
-        onAddTodo = { viewModel.addTodo("新しいTodo") },
+        onAddTodo = onAddTodoClick,
         onToggleDone = { viewModel.toggleDone(it) },
         onClearAllTodo = { viewModel.clearAllTodos() }
     )

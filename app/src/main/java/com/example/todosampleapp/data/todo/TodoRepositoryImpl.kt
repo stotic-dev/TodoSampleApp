@@ -14,8 +14,8 @@ class TodoRepositoryImpl @Inject constructor(
     override fun observeTodos(): Flow<List<TodoItem>> =
         dao.observeAll().map { entities -> entities.map { it.toDomain() } }
 
-    override suspend fun addTodo(title: String) {
-        dao.insert(TodoEntity(title = title, done = false))
+    override suspend fun addTodo(title: String, detail: String) {
+        dao.insert(TodoEntity(title = title, done = false, detail = detail))
     }
 
     override suspend fun toggleDone(id: Int) {
@@ -27,5 +27,6 @@ class TodoRepositoryImpl @Inject constructor(
         dao.nukeTable()
     }
 
-    private fun TodoEntity.toDomain(): TodoItem = TodoItem(id = id, title = title, done = done)
+    private fun TodoEntity.toDomain(): TodoItem =
+        TodoItem(id = id, title = title, done = done, detail = detail)
 }

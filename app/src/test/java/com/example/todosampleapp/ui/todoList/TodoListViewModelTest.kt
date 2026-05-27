@@ -85,14 +85,18 @@ private class FakeTodoRepository : TodoRepository {
 
     override fun observeTodos(): Flow<List<TodoItem>> = state.asStateFlow()
 
-    override suspend fun addTodo(title: String) {
+    override suspend fun addTodo(title: String, detail: String) {
         val newId = (state.value.maxOfOrNull { it.id } ?: 0) + 1
-        state.update { it + TodoItem(newId, title, false) }
+        state.update { it + TodoItem(newId, title, false, detail) }
     }
 
     override suspend fun toggleDone(id: Int) {
         state.update { list ->
             list.map { if (it.id == id) it.copy(done = !it.done) else it }
         }
+    }
+
+    override suspend fun clearAll() {
+        state.value = emptyList()
     }
 }

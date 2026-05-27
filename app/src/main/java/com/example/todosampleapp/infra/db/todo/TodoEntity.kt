@@ -8,4 +8,5 @@ data class TodoEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String,
     val done: Boolean,
+    val detail: String = "",
 )
