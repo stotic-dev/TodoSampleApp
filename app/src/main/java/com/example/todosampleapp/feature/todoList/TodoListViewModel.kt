@@ -12,22 +12,28 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TodoListViewModel @Inject constructor(
-    private val repository: TodoRepository,
-) : ViewModel() {
+class TodoListViewModel
+    @Inject
+    constructor(
+        private val repository: TodoRepository,
+    ) : ViewModel() {
+        val todos: StateFlow<List<TodoItem>> =
+            repository
+                .observeTodos()
+                .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
-    val todos: StateFlow<List<TodoItem>> = repository.observeTodos()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+        fun addTodo(
+            title: String,
+            detail: String = "",
+        ) {
+            viewModelScope.launch { repository.addTodo(title, detail) }
+        }
 
-    fun addTodo(title: String, detail: String = "") {
-        viewModelScope.launch { repository.addTodo(title, detail) }
+        fun toggleDone(id: Int) {
+            viewModelScope.launch { repository.toggleDone(id) }
+        }
+
+        fun clearAllTodos() {
+            viewModelScope.launch { repository.clearAll() }
+        }
     }
-
-    fun toggleDone(id: Int) {
-        viewModelScope.launch { repository.toggleDone(id) }
-    }
-
-    fun clearAllTodos() {
-        viewModelScope.launch { repository.clearAll() }
-    }
-}

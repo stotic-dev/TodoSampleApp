@@ -14,11 +14,13 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
-
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase =
-        Room.databaseBuilder(context, AppDatabase::class.java, "todo-database")
+    fun provideAppDatabase(
+        @ApplicationContext context: Context,
+    ): AppDatabase =
+        Room
+            .databaseBuilder(context, AppDatabase::class.java, "todo-database")
             .fallbackToDestructiveMigration(dropAllTables = true)
             .build()
 

@@ -10,16 +10,14 @@ import com.example.todosampleapp.feature.todoList.TodoListScreen
 import com.example.todosampleapp.feature.todoList.TodoListViewModel
 
 @Composable
-fun AppNavHost(
-    navController: NavHostController
-) {
+fun AppNavHost(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = NavRoute.TodoList
+        startDestination = NavRoute.TodoList,
     ) {
         composable<NavRoute.TodoList> {
             TodoListScreen(
-                onAddTodoClick = { navController.navigate(NavRoute.TodoAdd) }
+                onAddTodoClick = { navController.navigate(NavRoute.TodoAdd) },
             )
         }
         composable<NavRoute.TodoAdd> {
@@ -29,7 +27,7 @@ fun AppNavHost(
                     viewModel.addTodo(title, detail)
                     navController.popBackStack()
                 },
-                onCancel = { navController.popBackStack() }
+                onCancel = { navController.popBackStack() },
             )
         }
     }

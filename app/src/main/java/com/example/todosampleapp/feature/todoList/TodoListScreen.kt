@@ -38,7 +38,7 @@ fun TodoListScreen(
         todos = todos,
         onAddTodo = onAddTodoClick,
         onToggleDone = { viewModel.toggleDone(it) },
-        onClearAllTodo = { viewModel.clearAllTodos() }
+        onClearAllTodo = { viewModel.clearAllTodos() },
     )
 }
 
@@ -48,7 +48,7 @@ private fun TodoListContent(
     todos: List<TodoItem>,
     onAddTodo: () -> Unit,
     onToggleDone: (Int) -> Unit,
-    onClearAllTodo: () -> Unit
+    onClearAllTodo: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -58,34 +58,36 @@ private fun TodoListContent(
                     IconButton(onClearAllTodo) {
                         Icon(imageVector = Icons.Default.Clear, contentDescription = "削除")
                     }
-                }
+                },
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddTodo) {
                 Icon(Icons.Default.Add, contentDescription = "追加")
             }
-        }
+        },
     ) { innerPadding ->
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
         ) {
             items(todos, key = { it.id }) { todo ->
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Checkbox(
                         checked = todo.done,
-                        onCheckedChange = { onToggleDone(todo.id) }
+                        onCheckedChange = { onToggleDone(todo.id) },
                     )
                     Text(
                         text = todo.title,
-                        modifier = Modifier.padding(start = 8.dp)
+                        modifier = Modifier.padding(start = 8.dp),
                     )
                 }
             }
@@ -98,14 +100,15 @@ private fun TodoListContent(
 fun TodoListScreenPreview() {
     TodoSampleAppTheme {
         TodoListContent(
-            todos = listOf(
-                TodoItem(1, "牛乳を買う", false),
-                TodoItem(2, "洗濯する", false),
-                TodoItem(3, "運動する", true),
-            ),
+            todos =
+                listOf(
+                    TodoItem(1, "牛乳を買う", false),
+                    TodoItem(2, "洗濯する", false),
+                    TodoItem(3, "運動する", true),
+                ),
             onAddTodo = {},
             onToggleDone = {},
-            onClearAllTodo = {}
+            onClearAllTodo = {},
         )
     }
 }

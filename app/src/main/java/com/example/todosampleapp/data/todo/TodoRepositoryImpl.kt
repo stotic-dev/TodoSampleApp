@@ -7,26 +7,29 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class TodoRepositoryImpl @Inject constructor(
-    private val dao: TodoDao,
-) : TodoRepository {
+class TodoRepositoryImpl
+    @Inject
+    constructor(
+        private val dao: TodoDao,
+    ) : TodoRepository {
+        override fun observeTodos(): Flow<List<TodoItem>> =
+            dao.observeAll().map { entities -> entities.map { it.toDomain() } }
 
-    override fun observeTodos(): Flow<List<TodoItem>> =
-        dao.observeAll().map { entities -> entities.map { it.toDomain() } }
+        override suspend fun addTodo(
+            title: String,
+            detail: String,
+        ) {
+            dao.insert(TodoEntity(title = title, done = false, detail = detail))
+        }
 
-    override suspend fun addTodo(title: String, detail: String) {
-        dao.insert(TodoEntity(title = title, done = false, detail = detail))
+        override suspend fun toggleDone(id: Int) {
+            val current = dao.findById(id) ?: return
+            dao.update(current.copy(done = !current.done))
+        }
+
+        override suspend fun clearAll() {
+            dao.nukeTable()
+        }
+
+        private fun TodoEntity.toDomain(): TodoItem = TodoItem(id = id, title = title, done = done, detail = detail)
     }
-
-    override suspend fun toggleDone(id: Int) {
-        val current = dao.findById(id) ?: return
-        dao.update(current.copy(done = !current.done))
-    }
-
-    override suspend fun clearAll() {
-        dao.nukeTable()
-    }
-
-    private fun TodoEntity.toDomain(): TodoItem =
-        TodoItem(id = id, title = title, done = done, detail = detail)
-}
