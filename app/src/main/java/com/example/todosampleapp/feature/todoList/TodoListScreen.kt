@@ -1,4 +1,4 @@
-package com.example.todosampleapp.ui.todoList
+package com.example.todosampleapp.feature.todoList
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize

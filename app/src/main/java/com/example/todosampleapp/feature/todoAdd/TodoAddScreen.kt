@@ -1,4 +1,4 @@
-package com.example.todosampleapp.ui.todoAdd
+package com.example.todosampleapp.feature.todoAdd
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

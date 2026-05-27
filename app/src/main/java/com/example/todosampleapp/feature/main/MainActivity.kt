@@ -1,4 +1,4 @@
-package com.example.todosampleapp
+package com.example.todosampleapp.feature.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,9 +11,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.todosampleapp.ui.theme.TodoSampleAppTheme
-import com.example.todosampleapp.ui.todoAdd.TodoAddScreen
-import com.example.todosampleapp.ui.todoList.TodoListScreen
-import com.example.todosampleapp.ui.todoList.TodoListViewModel
+import com.example.todosampleapp.feature.todoAdd.TodoAddScreen
+import com.example.todosampleapp.feature.todoList.TodoListScreen
+import com.example.todosampleapp.feature.todoList.TodoListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
