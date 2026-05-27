@@ -1,4 +1,4 @@
-package com.example.todosampleapp.ui.todoList
+package com.example.todosampleapp.feature.todoList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,8 +19,8 @@ class TodoListViewModel @Inject constructor(
     val todos: StateFlow<List<TodoItem>> = repository.observeTodos()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
-    fun addTodo(title: String) {
-        viewModelScope.launch { repository.addTodo(title) }
+    fun addTodo(title: String, detail: String = "") {
+        viewModelScope.launch { repository.addTodo(title, detail) }
     }
 
     fun toggleDone(id: Int) {

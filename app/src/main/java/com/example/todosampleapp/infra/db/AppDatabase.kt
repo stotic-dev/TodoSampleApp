@@ -7,7 +7,7 @@ import com.example.todosampleapp.infra.db.todo.TodoEntity
 
 @Database(
     entities = [TodoEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
