@@ -1,15 +1,18 @@
 *.iml
 .gradle
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+# IntelliJ IDEA / Android Studio
+# .idea/ は基本的に無視するが、チーム共有すべき設定だけ追跡する
+.idea/*
+!.idea/codeStyles/
+!.idea/inspectionProfiles/
+!.idea/vcs.xml
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
+
+# Node.js (husky)
+node_modules/
