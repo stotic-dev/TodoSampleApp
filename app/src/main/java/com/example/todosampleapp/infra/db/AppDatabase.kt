@@ -8,7 +8,7 @@ import com.example.todosampleapp.infra.db.todo.TodoEntity
 @Database(
     entities = [TodoEntity::class],
     version = 2,
-    exportSchema = false
+    exportSchema = false,
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun todoDao(): TodoDao

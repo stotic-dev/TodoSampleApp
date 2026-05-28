@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+# ステージされている Kotlin ファイル (.kt / .kts) を抽出
+STAGED_KOTLIN_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(kt|kts)$' || true)
+
+if [ -z "$STAGED_KOTLIN_FILES" ]; then
+  exit 0
+fi
+
+echo "🔧 ktlintFormat を実行中..."
+./gradlew ktlintFormat --quiet
+STATUS=$?
+
+if [ $STATUS -ne 0 ]; then
+  echo "❌ ktlintFormat が失敗しました。コミットを中止します。"
+  exit $STATUS
+fi
+
+# フォーマット結果を再ステージ（元々ステージされていたファイルのみ）
+echo "$STAGED_KOTLIN_FILES" | xargs git add
+
+echo "✅ フォーマット完了"

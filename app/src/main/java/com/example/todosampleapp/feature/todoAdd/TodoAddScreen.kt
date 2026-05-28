@@ -54,10 +54,11 @@ fun TodoAddScreen(
         },
     ) { innerPadding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(16.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             OutlinedTextField(
@@ -71,9 +72,10 @@ fun TodoAddScreen(
                 value = detail,
                 onValueChange = { detail = it },
                 label = { Text("詳細") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(160.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(160.dp),
             )
             Spacer(modifier = Modifier.size(8.dp))
             Button(

@@ -4,7 +4,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class TodoListTest {
-
     // region add
 
     @Test
@@ -17,12 +16,14 @@ class TodoListTest {
     fun `add - 複数追加する`() {
         val result = TodoList().add("タスク1").add("タスク2").add("タスク3")
         assertEquals(
-            TodoList(listOf(
-                TodoItem(1, "タスク1", false),
-                TodoItem(2, "タスク2", false),
-                TodoItem(3, "タスク3", false),
-            )),
-            result
+            TodoList(
+                listOf(
+                    TodoItem(1, "タスク1", false),
+                    TodoItem(2, "タスク2", false),
+                    TodoItem(3, "タスク3", false),
+                ),
+            ),
+            result,
         )
     }
 
@@ -48,7 +49,7 @@ class TodoListTest {
         val result = todoList.toggleDone(1)
         assertEquals(
             TodoList(listOf(TodoItem(1, "タスク1", true), TodoItem(2, "タスク2", false))),
-            result
+            result,
         )
     }
 

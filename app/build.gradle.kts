@@ -4,14 +4,35 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.ktlint)
+}
+
+ktlint {
+    // Android 向けのルールを有効化
+    android.set(true)
+    // コンソールにカラー付きで出力
+    verbose.set(true)
+    // CI（-PktlintStrict 指定）では違反でビルドを失敗させ、
+    // 通常のローカルビルドでは警告のみで失敗させない
+    ignoreFailures.set(!project.hasProperty("ktlintStrict"))
+    // 生成コード（KSP/Room/Hilt など）はチェック対象外
+    filter {
+        exclude { it.file.path.contains("generated/") }
+    }
+}
+
+// ローカルビルド時にも ktlintCheck を実行する（警告のみ）
+tasks.named("preBuild") {
+    dependsOn("ktlintCheck")
 }
 
 android {
     namespace = "com.example.todosampleapp"
     compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
+        version =
+            release(36) {
+                minorApiLevel = 1
+            }
     }
 
     defaultConfig {
@@ -29,7 +50,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }

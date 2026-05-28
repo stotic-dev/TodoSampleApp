@@ -20,25 +20,26 @@ import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class TodoListViewModelTest {
-
     private val testDispatcher = UnconfinedTestDispatcher()
     private lateinit var fakeRepository: FakeTodoRepository
     private lateinit var viewModel: TodoListViewModel
 
     @Before
-    fun setUp() = runTest(testDispatcher) {
-        Dispatchers.setMain(testDispatcher)
-        fakeRepository = FakeTodoRepository().apply {
-            seed(
-                listOf(
-                    TodoItem(1, "牛乳を買う", false),
-                    TodoItem(2, "洗濯する", false),
-                    TodoItem(3, "運動する", true),
-                )
-            )
+    fun setUp() =
+        runTest(testDispatcher) {
+            Dispatchers.setMain(testDispatcher)
+            fakeRepository =
+                FakeTodoRepository().apply {
+                    seed(
+                        listOf(
+                            TodoItem(1, "牛乳を買う", false),
+                            TodoItem(2, "洗濯する", false),
+                            TodoItem(3, "運動する", true),
+                        ),
+                    )
+                }
+            viewModel = TodoListViewModel(fakeRepository)
         }
-        viewModel = TodoListViewModel(fakeRepository)
-    }
 
     @After
     fun tearDown() {
@@ -55,7 +56,12 @@ class TodoListViewModelTest {
     @Test
     fun `addTodo - 追加したtitleがtodosに反映される`() {
         viewModel.addTodo("新しいタスク")
-        assertEquals("新しいタスク", viewModel.todos.value.last().title)
+        assertEquals(
+            "新しいタスク",
+            viewModel.todos.value
+                .last()
+                .title,
+        )
     }
 
     @Test
@@ -86,7 +92,10 @@ private class FakeTodoRepository : TodoRepository {
 
     override fun observeTodos(): Flow<List<TodoItem>> = state.asStateFlow()
 
-    override suspend fun addTodo(title: String, detail: String) {
+    override suspend fun addTodo(
+        title: String,
+        detail: String,
+    ) {
         val newId = (state.value.maxOfOrNull { it.id } ?: 0) + 1
         state.update { it + TodoItem(newId, title, false, detail) }
     }

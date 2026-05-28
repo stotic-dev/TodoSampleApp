@@ -1,8 +1,6 @@
 package com.example.todosampleapp.infra.db.todo
 
 import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.DeleteTable
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -10,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TodoDao {
-
     @Query("SELECT * FROM todos ORDER BY id ASC")
     fun observeAll(): Flow<List<TodoEntity>>
 
@@ -24,5 +21,5 @@ interface TodoDao {
     suspend fun update(entity: TodoEntity)
 
     @Query("DELETE FROM todos")
-    suspend fun nukeTable();
+    suspend fun nukeTable()
 }
