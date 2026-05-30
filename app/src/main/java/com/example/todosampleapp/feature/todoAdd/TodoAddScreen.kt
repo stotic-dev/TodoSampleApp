@@ -2,6 +2,7 @@ package com.example.todosampleapp.feature.todoAdd
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -27,16 +29,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.todosampleapp.ui.theme.TodoSampleAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoAddScreen(
-    onSave: (title: String, detail: String) -> Unit,
+    viewModel: TodoAddViewModel = hiltViewModel(),
+    onSaved: () -> Unit,
     onCancel: () -> Unit,
 ) {
     var title by rememberSaveable { mutableStateOf("") }
     var detail by rememberSaveable { mutableStateOf("") }
+
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    LaunchedEffect(state) {
+        if (state == TodoAddUIState.COMPLETE) {
+            onSaved()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -53,44 +65,67 @@ fun TodoAddScreen(
             )
         },
     ) { innerPadding ->
-        Column(
+        TodoAddInputContent(
+            title = title,
+            detail = detail,
+            innerPadding = innerPadding,
+            onClickSaveButton = {
+                viewModel.onClickAddButton()
+            },
+            onCancel = onCancel,
+            onValueChangeTitle = { title = it },
+            onValueChangeDetail = { detail = it },
+        )
+    }
+}
+
+@Composable
+fun TodoAddInputContent(
+    title: String,
+    detail: String,
+    innerPadding: PaddingValues,
+    onClickSaveButton: () -> Unit,
+    onCancel: () -> Unit,
+    onValueChangeTitle: (title: String) -> Unit,
+    onValueChangeDetail: (detail: String) -> Unit,
+) {
+    Column(
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        OutlinedTextField(
+            value = title,
+            onValueChange = onValueChangeTitle,
+            label = { Text("タイトル") },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        OutlinedTextField(
+            value = detail,
+            onValueChange = onValueChangeDetail,
+            label = { Text("詳細") },
             modifier =
                 Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                    .fillMaxWidth()
+                    .height(160.dp),
+        )
+        Spacer(modifier = Modifier.size(8.dp))
+        Button(
+            onClick = onClickSaveButton,
+            enabled = title.isNotBlank(),
+            modifier = Modifier.fillMaxWidth(),
         ) {
-            OutlinedTextField(
-                value = title,
-                onValueChange = { title = it },
-                label = { Text("タイトル") },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-            )
-            OutlinedTextField(
-                value = detail,
-                onValueChange = { detail = it },
-                label = { Text("詳細") },
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(160.dp),
-            )
-            Spacer(modifier = Modifier.size(8.dp))
-            Button(
-                onClick = { onSave(title, detail) },
-                enabled = title.isNotBlank(),
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text("保存")
-            }
-            OutlinedButton(
-                onClick = onCancel,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text("キャンセル")
-            }
+            Text("保存")
+        }
+        OutlinedButton(
+            onClick = onCancel,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text("キャンセル")
         }
     }
 }
@@ -99,6 +134,6 @@ fun TodoAddScreen(
 @Composable
 fun TodoAddScreenPreview() {
     TodoSampleAppTheme {
-        TodoAddScreen(onSave = { _, _ -> }, onCancel = {})
+        TodoAddScreen(onSaved = {}, onCancel = {})
     }
 }
