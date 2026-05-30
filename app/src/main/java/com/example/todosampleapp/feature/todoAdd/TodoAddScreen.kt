@@ -63,8 +63,7 @@ fun TodoAddScreen(
         },
     ) { innerPadding ->
         TodoAddInputContent(
-            title = inputItem.title,
-            detail = inputItem.detail,
+            inputItem = inputItem,
             innerPadding = innerPadding,
             onClickSaveButton = {
                 viewModel.onClickAddButton()
@@ -78,8 +77,7 @@ fun TodoAddScreen(
 
 @Composable
 fun TodoAddInputContent(
-    title: String,
-    detail: String,
+    inputItem: AddTodoInputItem,
     innerPadding: PaddingValues,
     onClickSaveButton: () -> Unit,
     onCancel: () -> Unit,
@@ -95,14 +93,14 @@ fun TodoAddInputContent(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         OutlinedTextField(
-            value = title,
+            value = inputItem.title,
             onValueChange = onValueChangeTitle,
             label = { Text("タイトル") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
         )
         OutlinedTextField(
-            value = detail,
+            value = inputItem.detail,
             onValueChange = onValueChangeDetail,
             label = { Text("詳細") },
             modifier =
@@ -113,7 +111,7 @@ fun TodoAddInputContent(
         Spacer(modifier = Modifier.size(8.dp))
         Button(
             onClick = onClickSaveButton,
-            enabled = title.isNotBlank(),
+            enabled = inputItem.canSave,
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text("保存")
