@@ -23,8 +23,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,15 +38,14 @@ fun TodoAddScreen(
     onSaved: () -> Unit,
     onCancel: () -> Unit,
 ) {
-    var title by rememberSaveable { mutableStateOf("") }
-    var detail by rememberSaveable { mutableStateOf("") }
-
     val state by viewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(state) {
         if (state == TodoAddUIState.COMPLETE) {
             onSaved()
         }
     }
+
+    val inputItem by viewModel.inputItem.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -66,15 +63,15 @@ fun TodoAddScreen(
         },
     ) { innerPadding ->
         TodoAddInputContent(
-            title = title,
-            detail = detail,
+            title = inputItem.title,
+            detail = inputItem.detail,
             innerPadding = innerPadding,
             onClickSaveButton = {
                 viewModel.onClickAddButton()
             },
             onCancel = onCancel,
-            onValueChangeTitle = { title = it },
-            onValueChangeDetail = { detail = it },
+            onValueChangeTitle = { viewModel.onChangeTitle(title = it) },
+            onValueChangeDetail = { viewModel.onChangeDetail(detail = it) },
         )
     }
 }
