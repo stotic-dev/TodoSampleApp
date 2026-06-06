@@ -15,5 +15,7 @@ interface TodoRepository {
 
     suspend fun toggleDone(id: Int)
 
+    suspend fun deleteItem(id: Int)
+
     suspend fun clearAll()
 }

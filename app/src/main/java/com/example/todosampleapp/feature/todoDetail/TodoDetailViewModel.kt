@@ -33,4 +33,10 @@ class TodoDetailViewModel
                 val item = item.value ?: return@launch
                 todoRepository.toggleDone(item.id)
             }
+
+        fun onDeleteButtonClick() =
+            viewModelScope.launch {
+                val item = item.value ?: return@launch
+                todoRepository.deleteItem(item.id)
+            }
     }

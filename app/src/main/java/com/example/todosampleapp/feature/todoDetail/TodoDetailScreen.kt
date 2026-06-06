@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -39,6 +40,10 @@ fun TodoDetailScreen(
         item = item,
         onBack = onBack,
         onChangeDoneStatus = { viewModel.onChangeDoneStatus() },
+        onClickDeleteButton = {
+            viewModel.onDeleteButtonClick()
+            onBack()
+        },
     )
 }
 
@@ -48,6 +53,7 @@ private fun TodoDetailScreen(
     item: TodoItem?,
     onBack: () -> Unit,
     onChangeDoneStatus: (Boolean) -> Unit = {},
+    onClickDeleteButton: () -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -58,6 +64,14 @@ private fun TodoDetailScreen(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "戻る",
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onClickDeleteButton) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "削除",
                         )
                     }
                 },

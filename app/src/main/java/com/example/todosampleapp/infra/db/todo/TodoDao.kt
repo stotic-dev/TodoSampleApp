@@ -23,6 +23,9 @@ interface TodoDao {
     @Update
     suspend fun update(entity: TodoEntity)
 
+    @Query("DELETE FROM todos WHERE id = :id")
+    suspend fun deleteById(id: Int)
+
     @Query("DELETE FROM todos")
     suspend fun nukeTable()
 }

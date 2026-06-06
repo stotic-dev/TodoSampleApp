@@ -29,6 +29,10 @@ class TodoRepositoryImpl
             dao.update(current.copy(done = !current.done))
         }
 
+        override suspend fun deleteItem(id: Int) {
+            dao.deleteById(id)
+        }
+
         override suspend fun clearAll() {
             dao.nukeTable()
         }
