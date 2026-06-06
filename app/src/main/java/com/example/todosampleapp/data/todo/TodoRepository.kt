@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 interface TodoRepository {
     fun observeTodos(): Flow<List<TodoItem>>
 
+    fun observeById(id: Int): Flow<TodoItem?>
+
     suspend fun addTodo(
         title: String,
         detail: String = "",

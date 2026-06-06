@@ -1,5 +1,6 @@
 package com.example.todosampleapp.feature.todoList
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,12 +32,14 @@ import com.example.todosampleapp.ui.theme.TodoSampleAppTheme
 @Composable
 fun TodoListScreen(
     onAddTodoClick: () -> Unit,
+    onTodoClick: (TodoItem) -> Unit,
     viewModel: TodoListViewModel = hiltViewModel(),
 ) {
     val todos by viewModel.todos.collectAsStateWithLifecycle()
     TodoListContent(
         todos = todos,
         onAddTodo = onAddTodoClick,
+        onTodoClick = onTodoClick,
         onToggleDone = { viewModel.toggleDone(it) },
         onClearAllTodo = { viewModel.clearAllTodos() },
     )
@@ -47,6 +50,7 @@ fun TodoListScreen(
 private fun TodoListContent(
     todos: List<TodoItem>,
     onAddTodo: () -> Unit,
+    onTodoClick: (TodoItem) -> Unit,
     onToggleDone: (Int) -> Unit,
     onClearAllTodo: () -> Unit,
 ) {
@@ -78,6 +82,7 @@ private fun TodoListContent(
                     modifier =
                         Modifier
                             .fillMaxWidth()
+                            .clickable { onTodoClick(todo) }
                             .padding(horizontal = 16.dp, vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -107,6 +112,7 @@ fun TodoListScreenPreview() {
                     TodoItem(3, "運動する", true),
                 ),
             onAddTodo = {},
+            onTodoClick = {},
             onToggleDone = {},
             onClearAllTodo = {},
         )

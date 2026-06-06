@@ -15,6 +15,8 @@ class TodoRepositoryImpl
         override fun observeTodos(): Flow<List<TodoItem>> =
             dao.observeAll().map { entities -> entities.map { it.toDomain() } }
 
+        override fun observeById(id: Int): Flow<TodoItem?> = dao.observeById(id).map { it?.toDomain() }
+
         override suspend fun addTodo(
             title: String,
             detail: String,

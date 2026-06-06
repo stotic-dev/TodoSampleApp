@@ -14,6 +14,9 @@ interface TodoDao {
     @Query("SELECT * FROM todos WHERE id = :id")
     suspend fun findById(id: Int): TodoEntity?
 
+    @Query("SELECT * FROM todos WHERE id = :id")
+    fun observeById(id: Int): Flow<TodoEntity?>
+
     @Insert
     suspend fun insert(entity: TodoEntity): Long
 
