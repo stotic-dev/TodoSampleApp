@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,7 +19,7 @@ class TodoDetailViewModel
     @Inject
     constructor(
         savedStateHandle: SavedStateHandle,
-        todoRepository: TodoRepository,
+        private val todoRepository: TodoRepository,
     ) : ViewModel() {
         private val route: NavRoute.TodoDetail = savedStateHandle.toRoute()
 
@@ -26,4 +27,10 @@ class TodoDetailViewModel
             todoRepository
                 .observeById(route.id)
                 .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+
+        fun onChangeDoneStatus() =
+            viewModelScope.launch {
+                val item = item.value ?: return@launch
+                todoRepository.toggleDone(item.id)
+            }
     }
