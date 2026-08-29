@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "407563839072",
+    "project_id": "sampletodoapp-a2b5d",
+    "storage_bucket": "sampletodoapp-a2b5d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407563839072:android:aaeff2e6e78775fd038505",
+        "android_client_info": {
+          "package_name": "com.example.todosampleapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpm3RUZpZFz4znhhJF0BDjngZugWIYRLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

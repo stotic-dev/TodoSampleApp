@@ -16,3 +16,7 @@ local.properties
 
 # Node.js (husky)
 node_modules/
+
+# firebase
+google-services.json
+
