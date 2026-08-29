@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.todosampleapp.domain.todo.TodoItem
-import com.example.todosampleapp.ui.theme.TodoSampleAppTheme
+import com.example.todosampleapp.ui.theme.AppTheme
 
 @Composable
 fun TodoListScreen(
@@ -103,7 +103,7 @@ private fun TodoListContent(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun TodoListScreenPreview() {
-    TodoSampleAppTheme {
+    AppTheme {
         TodoListContent(
             todos =
                 listOf(

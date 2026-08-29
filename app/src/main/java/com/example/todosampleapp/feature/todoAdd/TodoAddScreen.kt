@@ -23,13 +23,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.todosampleapp.ui.theme.TodoSampleAppTheme
+import com.example.todosampleapp.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -128,7 +127,7 @@ fun TodoAddInputContent(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun TodoAddScreenPreview() {
-    TodoSampleAppTheme {
+    AppTheme {
         TodoAddScreen(onSaved = {}, onCancel = {})
     }
 }
