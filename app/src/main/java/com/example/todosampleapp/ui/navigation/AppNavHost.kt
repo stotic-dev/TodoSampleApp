@@ -5,7 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.todosampleapp.feature.todoAdd.TodoAddRoute
-import com.example.todosampleapp.feature.todoList.TodoListScreen
+import com.example.todosampleapp.feature.todoDetail.TodoDetailRoute
+import com.example.todosampleapp.feature.todoList.TodoListRoute
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
@@ -14,12 +15,13 @@ fun AppNavHost(navController: NavHostController) {
         startDestination = NavRoute.TodoList,
     ) {
         composable<NavRoute.TodoList> {
-            TodoListScreen(
-                onAddTodoClick = { navController.navigate(NavRoute.TodoAdd) },
-            )
+            TodoListRoute(navController = navController)
         }
         composable<NavRoute.TodoAdd> {
             TodoAddRoute(navController = navController)
+        }
+        composable<NavRoute.TodoDetail> {
+            TodoDetailRoute(navController = navController)
         }
     }
 }

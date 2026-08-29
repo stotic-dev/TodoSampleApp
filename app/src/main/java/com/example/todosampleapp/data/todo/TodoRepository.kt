@@ -6,12 +6,16 @@ import kotlinx.coroutines.flow.Flow
 interface TodoRepository {
     fun observeTodos(): Flow<List<TodoItem>>
 
+    fun observeById(id: Int): Flow<TodoItem?>
+
     suspend fun addTodo(
         title: String,
         detail: String = "",
     )
 
     suspend fun toggleDone(id: Int)
+
+    suspend fun deleteItem(id: Int)
 
     suspend fun clearAll()
 }

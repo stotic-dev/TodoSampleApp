@@ -1,12 +1,15 @@
 package com.example.todosampleapp.feature.todoList
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Checkbox
@@ -26,17 +29,19 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.todosampleapp.domain.todo.TodoItem
-import com.example.todosampleapp.ui.theme.TodoSampleAppTheme
+import com.example.todosampleapp.ui.theme.AppTheme
 
 @Composable
 fun TodoListScreen(
     onAddTodoClick: () -> Unit,
+    onTodoClick: (TodoItem) -> Unit,
     viewModel: TodoListViewModel = hiltViewModel(),
 ) {
     val todos by viewModel.todos.collectAsStateWithLifecycle()
     TodoListContent(
         todos = todos,
         onAddTodo = onAddTodoClick,
+        onTodoClick = onTodoClick,
         onToggleDone = { viewModel.toggleDone(it) },
         onClearAllTodo = { viewModel.clearAllTodos() },
     )
@@ -47,6 +52,7 @@ fun TodoListScreen(
 private fun TodoListContent(
     todos: List<TodoItem>,
     onAddTodo: () -> Unit,
+    onTodoClick: (TodoItem) -> Unit,
     onToggleDone: (Int) -> Unit,
     onClearAllTodo: () -> Unit,
 ) {
@@ -78,6 +84,7 @@ private fun TodoListContent(
                     modifier =
                         Modifier
                             .fillMaxWidth()
+                            .clickable { onTodoClick(todo) }
                             .padding(horizontal = 16.dp, vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -89,6 +96,11 @@ private fun TodoListContent(
                         text = todo.title,
                         modifier = Modifier.padding(start = 8.dp),
                     )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                        contentDescription = "詳細",
+                    )
                 }
             }
         }
@@ -98,7 +110,7 @@ private fun TodoListContent(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun TodoListScreenPreview() {
-    TodoSampleAppTheme {
+    AppTheme {
         TodoListContent(
             todos =
                 listOf(
@@ -107,6 +119,7 @@ fun TodoListScreenPreview() {
                     TodoItem(3, "運動する", true),
                 ),
             onAddTodo = {},
+            onTodoClick = {},
             onToggleDone = {},
             onClearAllTodo = {},
         )

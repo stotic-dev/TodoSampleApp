@@ -12,9 +12,12 @@ ktlint {
     android.set(true)
     // コンソールにカラー付きで出力
     verbose.set(true)
-    // CI（-PktlintStrict 指定）では違反でビルドを失敗させ、
-    // 通常のローカルビルドでは警告のみで失敗させない
-    ignoreFailures.set(!project.hasProperty("ktlintStrict"))
+    // CIで指摘があってもビルドを失敗させず、Reviewdogでコメントするために常にtrueに設定
+    ignoreFailures.set(true)
+    // Reviewdogで読み取るためのレポート形式(XML)を有効化
+    reporters {
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+    }
     // 生成コード（KSP/Room/Hilt など）はチェック対象外
     filter {
         exclude { it.file.path.contains("generated/") }
@@ -74,6 +77,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.hilt.android)
+    implementation(libs.androidx.compose.ui.text.google.fonts)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.room.runtime)

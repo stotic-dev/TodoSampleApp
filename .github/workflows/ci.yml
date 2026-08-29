@@ -1,10 +1,8 @@
 name: CI
 
 on:
-  # 対象ブランチを限定しない（全ブランチ宛てのPRでCIを実行）
   pull_request:
 
-# 同じPRで新しいpushがあったら古いジョブをキャンセルする
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -30,8 +28,28 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
+      - name: Setup Reviewdog
+        uses: reviewdog/action-setup@v1
+        with:
+          reviewdog_version: latest
+
       - name: Ktlint
-        run: ./gradlew ktlintCheck -PktlintStrict=true
+        run: ./gradlew ktlintCheck
+
+      - name: Run Reviewdog
+        if: ${{ always() && github.event_name == 'pull_request' }}
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # KtlintのXMLレポートを探す
+          REPORTS=$(find . -name "ktlint*.xml")
+
+          # レポートが見つかった場合のみreviewdogを実行
+          if [ -n "$REPORTS" ]; then
+            cat $REPORTS | reviewdog -f=checkstyle -reporter=github-pr-review -level=warning
+          else
+            echo "No ktlint XML reports found."
+          fi
 
       - name: Lint
         run: ./gradlew lint

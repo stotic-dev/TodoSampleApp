@@ -15,6 +15,8 @@ class TodoRepositoryImpl
         override fun observeTodos(): Flow<List<TodoItem>> =
             dao.observeAll().map { entities -> entities.map { it.toDomain() } }
 
+        override fun observeById(id: Int): Flow<TodoItem?> = dao.observeById(id).map { it?.toDomain() }
+
         override suspend fun addTodo(
             title: String,
             detail: String,
@@ -25,6 +27,10 @@ class TodoRepositoryImpl
         override suspend fun toggleDone(id: Int) {
             val current = dao.findById(id) ?: return
             dao.update(current.copy(done = !current.done))
+        }
+
+        override suspend fun deleteItem(id: Int) {
+            dao.deleteById(id)
         }
 
         override suspend fun clearAll() {
