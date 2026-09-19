@@ -6,4 +6,5 @@ plugins {
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.serialization) apply false
     alias(libs.plugins.ktlint) apply false
+    alias(libs.plugins.firebase) apply false
 }
