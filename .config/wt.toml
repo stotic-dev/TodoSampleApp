@@ -1,0 +1,10 @@
+# Worktrunk (wt) プロジェクト設定
+# https://worktrunk.dev/config/
+
+[pre-start]
+# gitignore 済みのシークレットファイル（google-services.json など）を
+# メインワークツリーから新しいワークツリーへコピーする。
+# コピー対象は .worktreeinclude で限定している。
+# ワークツリー作成直後のビルドでも必要なので、バックグラウンドの post-start ではなく
+# 完了を待つ pre-start で実行する。
+copy-secrets = "wt step copy-ignored"
