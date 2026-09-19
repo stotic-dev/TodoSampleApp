@@ -8,7 +8,7 @@
 !.idea/inspectionProfiles/
 !.idea/vcs.xml
 .DS_Store
-/build
+build/
 /captures
 .externalNativeBuild
 .cxx
