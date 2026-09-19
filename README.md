@@ -109,7 +109,7 @@ Robolectric の描画は OS やフォントで微妙に変わるため、ベー�
 
 1. Composable を変更したら `./gradlew :feature:<name>:ui:compareRoborazziDebug` で差分を目視
 2. PR に `update-snapshots` ラベルを付ける（`gh pr edit <番号> --add-label update-snapshots`）
-3. [`update-snapshots.yml`](.github/workflows/update-snapshots.yml) が `recordRoborazziDebug` を実行し、PNG を PR ブランチにコミットして CI を再実行
+3. [`update-snapshots.yml`](.github/workflows/update-snapshots.yml) が `recordRoborazziDebug` を実行し、PNG を PR ブランチにコミットして新しいコミットの CI を起動（`GITHUB_TOKEN` による push では CI run が承認待ちになるため自動承認する。`SNAPSHOT_PUSH_TOKEN` に PAT を登録すれば通常の push として CI が走る）
 
 CI の `verifyRoborazziDebug` が失敗した場合は、アーティファクト内の `**/build/outputs/roborazzi/*_compare.png` で差分を確認できます。
 | Build debug | `./gradlew assembleDebug` | デバッグビルド |

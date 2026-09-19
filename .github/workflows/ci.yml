@@ -2,7 +2,7 @@ name: CI
 
 on:
   pull_request:
-  # update-snapshots ワークフローが GITHUB_TOKEN で push した後に必須チェックを起動するため
+  # 手動再実行用
   workflow_dispatch:
 
 concurrency:
