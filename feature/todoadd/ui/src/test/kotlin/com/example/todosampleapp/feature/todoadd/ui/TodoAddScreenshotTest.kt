@@ -72,4 +72,22 @@ class TodoAddScreenshotTest {
         }
         composeTestRule.onRoot().captureRoboImage()
     }
+
+    @Test
+    fun todoAdd_titleOnly() {
+        composeTestRule.setContent {
+            AppTheme(dynamicColor = false) {
+                TodoAddScreen(
+                    title = "牛乳を買う",
+                    detail = "",
+                    canSave = false,
+                    onClickSaveButton = {},
+                    onCancel = {},
+                    onValueChangeTitle = {},
+                    onValueChangeDetail = {},
+                )
+            }
+        }
+        composeTestRule.onRoot().captureRoboImage()
+    }
 }
