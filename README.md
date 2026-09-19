@@ -1,6 +1,6 @@
 # TodoSampleApp
 
-Android Jetpack Compose を使ったサンプルアプリ。Feature ごとに `ui / presentation / entry` へ分割したマルチモジュール構成。
+Android Jetpack Compose を使ったサンプルアプリ。Feature ごとに `feature:<name>`（ViewModel / Route）と `feature:<name>:ui`（ステートレス Composable）へ分割したマルチモジュール構成。
 
 - パッケージ名: `com.example.todosampleapp`
 - minSdk: 24 / compileSdk・targetSdk: 36
@@ -35,12 +35,13 @@ Android Jetpack Compose を使ったサンプルアプリ。Feature ごとに `u
 
 # 特定モジュールのテストのみ実行
 ./gradlew :core:domain:test
-./gradlew :feature:todolist:presentation:testDebugUnitTest
+./gradlew :feature:todolist:testDebugUnitTest
 
-# スナップショットテスト（feature:*:ui のみビルドされる）
-./gradlew :feature:todolist:ui:recordRoborazziDebug   # 記録（src/test/screenshots に保存）
-./gradlew :feature:todolist:ui:verifyRoborazziDebug   # 検証
+# スナップショットテスト（feature:*:ui + core だけがビルドされる）
+./gradlew :feature:todolist:ui:verifyRoborazziDebug   # ベースラインと比較
 ./gradlew :feature:todolist:ui:compareRoborazziDebug  # 差分画像を build/outputs/roborazzi に出力
+# ベースライン (src/test/screenshots/*.png) の記録はローカルでは行わず、
+# PR に update-snapshots ラベルを付けて CI に記録させる（下記「スナップショットテスト」参照）
 
 # インストルメンテーションテスト（接続済みデバイス/エミュレータが必要）
 ./gradlew connectedAndroidTest
@@ -101,6 +102,16 @@ GitHub Actions でビルド・テストを自動実行します（ワークフ�
 | Lint | `./gradlew lint` | Android Lint |
 | Unit test | `./gradlew test` | ユニットテスト |
 | Screenshot test | `./gradlew verifyRoborazziDebug` | Roborazzi によるスナップショット検証（`feature:*:ui`） |
+
+### スナップショットテスト
+
+Robolectric の描画は OS やフォントで微妙に変わるため、ベースライン PNG は **CI (ubuntu / JDK 17) でのみ記録**します。ローカルの `recordRoborazzi*` は Convention Plugin が失敗させます（`-PallowLocalRecord` で解除可）。
+
+1. Composable を変更したら `./gradlew :feature:<name>:ui:compareRoborazziDebug` で差分を目視
+2. PR に `update-snapshots` ラベルを付ける（`gh pr edit <番号> --add-label update-snapshots`）
+3. [`update-snapshots.yml`](.github/workflows/update-snapshots.yml) が `recordRoborazziDebug` を実行し、PNG を PR ブランチにコミットして CI を再実行
+
+CI の `verifyRoborazziDebug` が失敗した場合は、アーティファクト内の `**/build/outputs/roborazzi/*_compare.png` で差分を確認できます。
 | Build debug | `./gradlew assembleDebug` | デバッグビルド |
 
 実行後、各モジュールの `build/reports/` と Roborazzi の差分画像をアーティファクト（保持期間 7 日）としてアップロードします。
@@ -117,10 +128,8 @@ GitHub Actions でビルド・テストを自動実行します（ワークフ�
 ├── infra/
 │   └── data/                  # Room / RepositoryImpl / Hilt Module（app からのみ参照）
 ├── feature/
-│   ├── todolist/
-│   │   ├── ui/                # ステートレスな Composable + スナップショットテスト
-│   │   ├── presentation/      # ViewModel / UiState（Compose 非依存）
-│   │   └── entry/             # Route 定義と NavGraph 登録（ui と presentation を繋ぐ）
+│   ├── todolist/              # ViewModel / UiState / Route 定義 / Entry Composable
+│   │   └── ui/                # ステートレスな Composable + スナップショットテスト
 │   ├── todoadd/               # 同上
 │   └── tododetail/            # 同上
 ├── gradle/
@@ -134,13 +143,13 @@ GitHub Actions でビルド・テストを自動実行します（ワークフ�
 ### 依存の向き
 
 ```
-app ──▶ feature:*:entry ──▶ feature:*:presentation ──▶ core:domain
- │            └──────────▶ feature:*:ui ──▶ core:designsystem
+app ──▶ feature:* ──▶ feature:*:ui ──▶ core:designsystem
+ │          └──────▶ core:domain
  └──▶ infra:data ──▶ core:domain
 ```
 
 - **feature は infra に依存しない**。`core:domain` の interface だけを見て、実体は `app` で Hilt が束ねる。この制約は Convention Plugin がビルド時に検証する。
-- **feature 同士も依存しない**。他画面への遷移は `entry` がラムダで受け取り、`app` の `AppNavHost` が配線する。
+- **feature 同士も依存しない**。他画面への遷移は `feature:<name>` の `NavGraphBuilder` 拡張がラムダで受け取り、`app` の `AppNavHost` が配線する。
 - **`ui` は Hilt / ViewModel / Navigation に依存しない**。そのためスナップショットテストは `ui` + `core:designsystem` + `core:domain` だけをビルドして実行できる。
 
 ### Convention Plugin
@@ -152,7 +161,6 @@ app ──▶ feature:*:entry ──▶ feature:*:presentation ──▶ core:do
 | `todosampleapp.android.application` | `:app` |
 | `todosampleapp.android.library` / `.library.compose` | Android Library（Compose 有無） |
 | `todosampleapp.android.hilt` | `@HiltViewModel` / `@Module` を持つモジュール |
+| `todosampleapp.android.feature` | `feature:<name>`（Compose + Hilt + Navigation + Serialization） |
 | `todosampleapp.android.feature.ui` | `feature:*:ui`（Compose + Roborazzi） |
-| `todosampleapp.android.feature.presentation` | `feature:*:presentation`（ViewModel + Hilt） |
-| `todosampleapp.android.feature.entry` | `feature:*:entry`（Navigation + Serialization） |
 | `todosampleapp.jvm.library` | `core:domain` などの純 Kotlin モジュール |
