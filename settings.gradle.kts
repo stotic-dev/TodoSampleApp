@@ -38,13 +38,7 @@ include(":core:designsystem")
 // infra: data 層の実体（Room など）。app からのみ参照する
 include(":infra:data")
 
-// feature: 画面ごとに ui / presentation / entry の 3 分割
-include(":feature:todolist:ui")
-include(":feature:todolist:presentation")
-include(":feature:todolist:entry")
-include(":feature:todoadd:ui")
-include(":feature:todoadd:presentation")
-include(":feature:todoadd:entry")
-include(":feature:tododetail:ui")
-include(":feature:tododetail:presentation")
-include(":feature:tododetail:entry")
+// feature: 画面ごとに <name> (ViewModel / Route / Entry) と <name>:ui (ステートレス Composable) に分割
+include(":feature:todolist", ":feature:todolist:ui")
+include(":feature:todoadd", ":feature:todoadd:ui")
+include(":feature:tododetail", ":feature:tododetail:ui")

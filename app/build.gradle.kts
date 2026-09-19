@@ -27,10 +27,10 @@ android {
 }
 
 dependencies {
-    // feature の entry と infra の実体を束ねるのは app だけ
-    implementation(projects.feature.todolist.entry)
-    implementation(projects.feature.todoadd.entry)
-    implementation(projects.feature.tododetail.entry)
+    // feature と infra の実体を束ねるのは app だけ
+    implementation(projects.feature.todolist)
+    implementation(projects.feature.todoadd)
+    implementation(projects.feature.tododetail)
     implementation(projects.infra.data)
     implementation(projects.core.designsystem)
 

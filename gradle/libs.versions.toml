@@ -86,11 +86,10 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 
 # build-logic で定義する Convention Plugin
-todosampleapp-android-application = { id = "todosampleapp.android.application", version = "unspecified" }
-todosampleapp-android-library = { id = "todosampleapp.android.library", version = "unspecified" }
-todosampleapp-android-library-compose = { id = "todosampleapp.android.library.compose", version = "unspecified" }
-todosampleapp-android-hilt = { id = "todosampleapp.android.hilt", version = "unspecified" }
-todosampleapp-android-feature-ui = { id = "todosampleapp.android.feature.ui", version = "unspecified" }
-todosampleapp-android-feature-presentation = { id = "todosampleapp.android.feature.presentation", version = "unspecified" }
-todosampleapp-android-feature-entry = { id = "todosampleapp.android.feature.entry", version = "unspecified" }
-todosampleapp-jvm-library = { id = "todosampleapp.jvm.library", version = "unspecified" }
+todosampleapp-android-application = { id = "todosampleapp.android.application" }
+todosampleapp-android-library = { id = "todosampleapp.android.library" }
+todosampleapp-android-library-compose = { id = "todosampleapp.android.library.compose" }
+todosampleapp-android-hilt = { id = "todosampleapp.android.hilt" }
+todosampleapp-android-feature-ui = { id = "todosampleapp.android.feature.ui" }
+todosampleapp-android-feature = { id = "todosampleapp.android.feature" }
+todosampleapp-jvm-library = { id = "todosampleapp.jvm.library" }

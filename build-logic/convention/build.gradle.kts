@@ -37,13 +37,9 @@ gradlePlugin {
             id = "todosampleapp.android.feature.ui"
             implementationClass = "AndroidFeatureUiConventionPlugin"
         }
-        register("androidFeaturePresentation") {
-            id = "todosampleapp.android.feature.presentation"
-            implementationClass = "AndroidFeaturePresentationConventionPlugin"
-        }
-        register("androidFeatureEntry") {
-            id = "todosampleapp.android.feature.entry"
-            implementationClass = "AndroidFeatureEntryConventionPlugin"
+        register("androidFeature") {
+            id = "todosampleapp.android.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
         }
         register("jvmLibrary") {
             id = "todosampleapp.jvm.library"
