@@ -1,0 +1,9 @@
+# wt step copy-ignored でワークツリー間でコピーする gitignore 済みファイル
+# （gitignore 済み かつ ここに列挙されたものだけがコピーされる）
+# Claude Code desktop の worktree 作成時にも同じファイルが参照される。
+
+# Firebase 設定（Secrets 管理のため git 追跡外）
+google-services.json
+
+# Android SDK パスなどローカル環境設定
+local.properties
