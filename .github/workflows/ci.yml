@@ -2,6 +2,8 @@ name: CI
 
 on:
   pull_request:
+  # 手動再実行用
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -67,6 +69,10 @@ jobs:
       - name: Unit test
         run: ./gradlew test
 
+      # ベースラインの更新は update-snapshots ワークフロー (PR に update-snapshots ラベル) で行う
+      - name: Screenshot test (feature:*:ui)
+        run: ./gradlew verifyRoborazziDebug
+
       - name: Build debug
         run: ./gradlew assembleDebug
 
@@ -76,6 +82,7 @@ jobs:
         with:
           name: reports
           path: |
-            app/build/reports/
+            **/build/reports/
+            **/build/outputs/roborazzi/
           if-no-files-found: ignore
           retention-days: 7
