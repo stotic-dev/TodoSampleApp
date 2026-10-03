@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.todosampleapp.designsystem.components.SectionCard
 import com.example.todosampleapp.designsystem.theme.AppTheme
 import com.example.todosampleapp.domain.todo.TodoItem
 
@@ -121,10 +122,12 @@ private fun TodoItemColumn(
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
         )
-        Text(
-            value,
-            fontSize = 18.sp,
-        )
+        SectionCard {
+            Text(
+                value,
+                fontSize = 18.sp,
+            )
+        }
     }
 }
 
