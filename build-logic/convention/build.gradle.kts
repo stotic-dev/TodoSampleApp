@@ -41,6 +41,10 @@ gradlePlugin {
             id = "todosampleapp.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
         }
+        register("androidTestRoborazzi") {
+            id = "todosampleapp.android.test.roborazzi"
+            implementationClass = "AndroidTestRoborazziConventionPlugin"
+        }
         register("jvmLibrary") {
             id = "todosampleapp.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
